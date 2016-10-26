@@ -69,6 +69,6 @@ resource "aws_instance" "consulserver" {
   associate_public_ip_address = "true"
   key_name                    = "${var.sshkey}"
   provisioner "local-exec" {
-    command = "setenforce 0 && curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | sudo bash && sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::consulserver'"
+    command = "sudo /sbin/setenforce 0 && /bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | sudo bash && sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::consulserver'"
   }
 }
