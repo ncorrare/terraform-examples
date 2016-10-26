@@ -5,15 +5,5 @@ yum -y install puppet-agent git
 export PATH=$PATH:/opt/puppetlabs/bin/:/opt/puppetlabs/puppet/bin
 /opt/puppetlabs/puppet/bin/gem install r10k
 mkdir /etc/puppetlabs/r10k
-echo << EOF > /etc/puppetlabs/r10k/r10k.yaml
-     sources:
-       puppet: {remote: 'https://github.com/ncorrare/hashi-control-repo.git', basedir: /etc/puppetlabs/code/environments, invalid_branches: error}
-       forge: {baseurl: 'https://forgeapi.puppetlabs.com'}
-     git:
-       private_key: /dev/null
-       repositories: []
-     deploy:
-       purge_levels: [deployment, environment, puppetfile]
-       purge_whitelist: []
-EOF
+curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/r10k.yaml > /etc/puppetlabs/r10k/r10k.yaml
 /opt/puppetlabs/puppet/bin/r10k deploy environment -p
