@@ -68,11 +68,7 @@ resource "aws_instance" "consulserver" {
   vpc_security_group_ids      = ["${aws_security_group.vpc.id}"]
   associate_public_ip_address = "true"
   key_name                    = "${var.sshkey}"
-  provisioner "file" {
-    source      = "provision.sh"
-    destination = "/tmp/provision.sh"
-  }
   provisioner "local-exec" {
-    command = "cat /tmp/provision.sh | sudo bash && sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::consulserver'"
+    command = "setenforce 0 && curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | sudo bash && sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::consulserver'"
   }
 }
