@@ -22,3 +22,8 @@ variable "sshkey" {
   description = "Name of the SSH Key Pair (in aws) used to login into the systems"
   default     = "id_rsa"
 }
+
+variable "keypath" {
+  description = "Path to the SSH private key used to login into the systems"
+  default     = "/Users/ncorrare/.ssh/id_rsa"
+}
