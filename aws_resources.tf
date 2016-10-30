@@ -124,7 +124,8 @@ resource "null_resource" "mysqlprovisioners" {
   }
   provisioner "remote-exec" {
     inline = [
-             "/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/setmysqlpassword.sh > /tmp/setmysqlpassword.sh && /bin/sudo /bin/bash /tmp/setmysqlpassword.sh ${aws_instance.vault.private_ip}"
+             /*"/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/setmysqlpassword.sh > /tmp/setmysqlpassword.sh && /bin/sudo /bin/bash /tmp/setmysqlpassword.sh ${aws_instance.vault.private_ip}" */
+             "/bin/true"
              ]
   }
 }
