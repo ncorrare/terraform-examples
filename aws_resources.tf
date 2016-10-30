@@ -124,8 +124,7 @@ resource "null_resource" "mysqlprovisioners" {
   }
   provisioner "remote-exec" {
     inline = [
-             /*"/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/setmysqlpassword.sh > /tmp/setmysqlpassword.sh && /bin/sudo /bin/bash /tmp/setmysqlpassword.sh ${aws_instance.vault.private_ip}" */
-             "/bin/true"
+             "/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/setmysqlpassword.sh > /tmp/setmysqlpassword.sh && /bin/sudo /bin/bash /tmp/setmysqlpassword.sh ${aws_instance.vault.private_ip}" 
              ]
   }
 }
@@ -147,7 +146,7 @@ resource "aws_instance" "vault" {
                "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault write -tls-skip-verify auth/aws-ec2/config/client secret_key=${aws_iam_access_key.vault.secret} access_key=${aws_iam_access_key.vault.id}",
                "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault write -tls-skip-verify auth/aws-ec2/role/example bound_account_id=${var.awsaccountid} policies=default",
                "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault mount -tls-skip-verify mysql",
-               "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault write -tls-skip-verify mysql/config/connection connection_url=\"vault:$(openssl rand -base64 32)@tcp(${aws_instance.database.public_ip}:3306)/\" verify_connection=false",
+               "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault write -tls-skip-verify mysql/config/connection connection_url=\"vault:$(openssl rand -base64 32)@tcp(${aws_instance.database.private_ip}:3306)/\" verify_connection=false",
                "/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/policies.hcl > policies.hcl",
                "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault policy-write -tls-skip-verify default ./policies.hcl"
                
