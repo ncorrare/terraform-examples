@@ -177,3 +177,41 @@ resource "aws_instance" "database" {
     }
   }
 }
+
+resource "aws_instance" "memcache" {
+  ami                         = "${lookup(var.aws_amis, var.aws_region)}"
+  depends_on                  = ["aws_instance.consulserver"]
+  instance_type               = "t2.micro"
+  subnet_id                   = "${aws_subnet.vpc_subnet.id}"
+  vpc_security_group_ids      = ["${aws_security_group.vpc.id}"]
+  iam_instance_profile        = "${aws_iam_instance_profile.test_profile.id}"
+  associate_public_ip_address = "true"
+  key_name                    = "${var.sshkey}"
+  provisioner "remote-exec" {
+    inline = "/usr/bin/sudo /sbin/setenforce 0 && /bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | /usr/bin/sudo /bin/bash && sudo /bin/sh -c \"echo 'consulserver: ${aws_instance.consulserver.private_ip}' > /opt/puppetlabs/facter/facts.d/consulserver.yaml\" && /usr/bin/sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::memcache'"
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = "${file(var.keypath)}"
+    }
+  }
+}
+
+resource "aws_instance" "webserver" {
+  ami                         = "${lookup(var.aws_amis, var.aws_region)}"
+  depends_on                  = ["aws_instance.database","aws_instance.memcache","aws_instance.vault"]
+  instance_type               = "t2.micro"
+  subnet_id                   = "${aws_subnet.vpc_subnet.id}"
+  vpc_security_group_ids      = ["${aws_security_group.vpc.id}"]
+  iam_instance_profile        = "${aws_iam_instance_profile.test_profile.id}"
+  associate_public_ip_address = "true"
+  key_name                    = "${var.sshkey}"
+  provisioner "remote-exec" {
+    inline = "/usr/bin/sudo /sbin/setenforce 0 && /bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | /usr/bin/sudo /bin/bash && sudo /bin/sh -c \"echo 'consulserver: ${aws_instance.consulserver.private_ip}' > /opt/puppetlabs/facter/facts.d/consulserver.yaml\" && /usr/bin/sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::webserver'"
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = "${file(var.keypath)}"
+    }
+  }
+}
