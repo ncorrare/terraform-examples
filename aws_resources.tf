@@ -202,7 +202,7 @@ resource "aws_instance" "webserver" {
   depends_on                  = ["aws_instance.database","aws_instance.memcache","aws_instance.vault"]
   instance_type               = "t2.micro"
   subnet_id                   = "${aws_subnet.vpc_subnet.id}"
-  vpc_security_group_ids      = ["${aws_security_group.vpc.id}"]
+  vpc_security_group_ids      = ["${aws_security_group.webserver.id}"]
   iam_instance_profile        = "${aws_iam_instance_profile.test_profile.id}"
   associate_public_ip_address = "true"
   key_name                    = "${var.sshkey}"
