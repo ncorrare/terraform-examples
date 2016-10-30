@@ -10,11 +10,14 @@ if [ "$?" -eq "0" ] && [ ! -z "$AUTH_TOKEN" ]; then
       if [ "$?" -eq "0" ]; then
         exit 0
       else
+	echo "SET PASSWORD command in mysql failed"
         exit 1
      fi
    else
+     echo "MySQL Password couldn't be retrieved from the vault"
      exit 1
    fi
 else
+  echo "Vault token couldn't be obtained"	
   exit 1
 fi
