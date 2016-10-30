@@ -27,3 +27,9 @@ variable "keypath" {
   description = "Path to the SSH private key used to login into the systems"
   default     = "/Users/ncorrare/.ssh/id_rsa"
 }
+
+variable "awsaccountid" {
+  description = "AWS Account ID"
+  default     = "952786520962"
+}
+
