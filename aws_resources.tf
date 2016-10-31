@@ -207,7 +207,10 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = "true"
   key_name                    = "${var.sshkey}"
   provisioner "remote-exec" {
-    inline = "/usr/bin/sudo /sbin/setenforce 0 && /bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | /usr/bin/sudo /bin/bash && sudo /bin/sh -c \"echo 'consulserver: ${aws_instance.consulserver.private_ip}' > /opt/puppetlabs/facter/facts.d/consulserver.yaml\" && /usr/bin/sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::webserver'"
+    inline = [ 
+               "/usr/bin/sudo /sbin/setenforce 0 && /bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/provision.sh | /usr/bin/sudo /bin/bash && sudo /bin/sh -c \"echo 'consulserver: ${aws_instance.consulserver.private_ip}' > /opt/puppetlabs/facter/facts.d/consulserver.yaml\" && /usr/bin/sudo /opt/puppetlabs/bin/puppet apply -e 'include profile::webserver'",
+               "/bin/curl https://raw.githubusercontent.com/ncorrare/terraform-examples/master/webservertoken.sh > /tmp/webservertoken.sh && /bin/sudo /bin/bash /tmp/webservertoken.sh ${aws_instance.vault.private_ip}"
+             ]
     connection {
       type        = "ssh"
       user        = "ec2-user"

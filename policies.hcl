@@ -1,4 +1,8 @@
 # Allow to read the root password for mysql
+path "mysql/creds/readonly" {
+    capabilities = ["read"]
+}
+ 
 path "mysql/config/connection" {
     capabilities = ["read"]
 }
