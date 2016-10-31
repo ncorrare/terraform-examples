@@ -129,6 +129,24 @@ resource "null_resource" "mysqlprovisioners" {
   }
 }
 
+resource "null_resource" "readonlyrole" {
+  triggers {
+    vault_servers = "${null_resource.mysqlprovisioners.id}"
+  }
+  connection {
+    host        = "${aws_instance.vault.public_ip}"
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = "${file(var.keypath)}"
+  }
+  provisioner "remote-exec" {
+    inline = [
+	     "VAULT_TOKEN=$(/usr/bin/sudo cat /root/vault.txt | grep Root | awk '{print $4}') /usr/local/bin/vault write -tls-skip-verify mysql/roles/readonly sql=\"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';\""
+             ]
+  }
+}
+
+
 
 resource "aws_instance" "vault" {
   ami                         = "${lookup(var.aws_amis, var.aws_region)}"
