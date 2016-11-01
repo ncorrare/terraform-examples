@@ -17,9 +17,9 @@ Every server gets provisioned using the Puppet agent without a master, code gets
 
 Consul is deployed on all servers, which are joined automatically to the cluster. The UI is only available in a single server, and accessible through ssh tunneling on plain http on the standard port (8500). Puppet can leverage consul's DNS interface to discover different parts of the infrastructure using the consullookup parser function (authored for this example and available as part of the profile module).
 
-Two security groups are created, one that allows only SSH access and another one that allows SSH and HTTP from outside the VPN. All communication between servers is done through the VPC, and it's irresctricted (don't do this at home, always create separate VPC's and restrict access between them to only the necessary ports).
+Two security groups are created, one that allows only SSH access and another one that allows SSH and HTTP from outside the VPC. All communication between servers is done through the VPC, and it's irresctricted (don't do this at home, always create separate VPC's and restrict access between them to only the necessary ports).
 
-Finally, the demo application deployed will query consul for the different elements of the infrastructure, and Vault for a set of readonly credentials to access the MySQL database.
+Finally, the demo application deployed will query consul for the different elements of the infrastructure, and Vault for a set of readonly credentials to access the MySQL database. The code for the application is on https://github.com/ncorrare/hashidemo.
 
 # How-to
 This example operates within the following assumptions:
