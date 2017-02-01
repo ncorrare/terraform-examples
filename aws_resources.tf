@@ -258,22 +258,23 @@ output "vault" { value = "${aws_instance.vault.public_dns}" }
 output "MySQL" { value = "${aws_instance.database.public_dns}" }
 output "memcache" { value = "${aws_instance.memcache.public_dns}" }
 output "webserver" { value = "${aws_instance.webserver.public_dns}" }
-
+/*
 output "Instructions" { value = "The Infrastructure is now ready, if you need to login into: 
 Consul:
-- ssh ec2-user@${aws_instance.consulserver.public_dns} -i ${var.keypath} -L 8500:localhost:8500
+ ssh ec2-user@${aws_instance.consulserver.public_dns} -i ${var.keypath} -L 8500:localhost:8500
 This command will map port 8500 from the consul server into localhost to give you access to the UI via http://localhost:8500/
 Vault:
-- ssh ec2-user@${aws_instance.vault.public_dns} -i ${var.keypath}
+ ssh ec2-user@${aws_instance.vault.public_dns} -i ${var.keypath}
 Unseal tokens and Initial Root Token are available in the /root/vault.txt file. Please ensure you copy the contents and delete the file.
 MySQL:
-- ssh ec2-user@${aws_instance.database.public_dns} -i ${var.keypath}
+ ssh ec2-user@${aws_instance.database.public_dns} -i ${var.keypath}
 Root access from localhost is available without a password. Credentials for vault have been dynamically generated and stored in Vault.
 Memcache:
-- ssh ec2-user@${aws_instance.memcache.public_dns} -i ${var.keypath}
+ ssh ec2-user@${aws_instance.memcache.public_dns} -i ${var.keypath}
 Webservers:
-- ssh ec2-user@${aws_instance.webserver.public_dns} -i ${var.keypath}
+ ssh ec2-user@${aws_instance.webserver.public_dns} -i ${var.keypath}
 
 To check the end to end result, you can hit the load balancer in http://${aws_elb.web.dns_name}/
 "
 }
+*/
