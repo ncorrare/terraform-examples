@@ -1,6 +1,7 @@
 #!/bin/bash
-rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-rpm -Uvh http://yum.puppetlabs.com/el/7Server/PC1/x86_64/puppetlabs-release-pc1-1.1.0-4.el7.noarch.rpm
+majversion=$(lsb_release -rs | cut -f1 -d.)
+rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-${majversion}.noarch.rpm
+rpm -Uvh http://yum.puppetlabs.com/el/${majversion}Server/PC1/x86_64/puppetlabs-release-pc1-1.1.0-4.el${majversion}.noarch.rpm
 yum -y install puppet-agent git
 export PATH=$PATH:/opt/puppetlabs/bin/:/opt/puppetlabs/puppet/bin
 /opt/puppetlabs/puppet/bin/gem install r10k
