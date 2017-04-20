@@ -1,4 +1,5 @@
 #!/bin/bash
+yum -y install redhat-lsb-core
 majversion=$(lsb_release -rs | cut -f1 -d.)
 rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-${majversion}.noarch.rpm
 rpm -Uvh http://yum.puppetlabs.com/el/${majversion}Server/PC1/x86_64/puppetlabs-release-pc1-1.1.0-4.el${majversion}.noarch.rpm
